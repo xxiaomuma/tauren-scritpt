@@ -39,7 +39,6 @@ class Operation:
         print("评论成功")
 
     def video_discuss_comment(self, match_comment_item_map):
-        time.sleep(3)
         press("x")
         total_video_comment_count = 0
         video_comment_count_label_items = find_all(S('.comment-header-inner-container'))
@@ -54,30 +53,29 @@ class Operation:
             video_comment_label_item_count = len(video_comment_label_items)
             if total_video_comment_count == 0 or video_comment_label_item_count <= 0:
                 break
-            #self._handle_video_discuss_comment(handle_start_index, video_comment_label_items, match_comment_item_map)
-            for index in range(len(video_comment_label_items) - handle_start_index):
-                video_comment_item = video_comment_label_items[handle_start_index + index]
-                comment_class = video_comment_item.web_element.get_attribute("class")
-                try:
-                    comment_text = find_all(S("." + comment_class + " div div div span span span span span span span"))[
-                        handle_start_index + index].web_element.text
-                    if len(comment_text) > 0:
-                        match_comment_text = self._match_comment(comment_text, match_comment_item_map)
-                        if len(match_comment_text) > 0:
-                            response_label_items = find_all(S("." + comment_class + " .dy-tip-container"))
-                            click(response_label_items[handle_start_index + index].web_element)
-                            click("留下你的精彩评论吧")
-                            write(match_comment_text)
-                            press(ENTER)
-                except IndexError:
-                    continue
+            self._handle_video_discuss_comment(handle_start_index, video_comment_label_items, match_comment_item_map)
             handle_start_index = video_comment_label_item_count + handle_start_index
             # 悬浮
             hover(video_comment_label_items[video_comment_label_item_count - 1].web_element)
         self.video_comment(match_comment_item_map)
 
     def _handle_video_discuss_comment(self, handle_start_index, video_comment_label_items, match_comment_item_map):
-       print("")
+        for index in range(len(video_comment_label_items) - handle_start_index):
+            video_comment_item = video_comment_label_items[handle_start_index + index]
+            comment_class = video_comment_item.web_element.get_attribute("class")
+            try:
+                comment_text = find_all(S("." + comment_class + " div div div span span span span span span span"))[
+                    handle_start_index + index].web_element.text
+                if len(comment_text) > 0:
+                    match_comment_text = self._match_comment(comment_text, match_comment_item_map)
+                    if len(match_comment_text) > 0:
+                        response_label_items = find_all(S("." + comment_class + " .dy-tip-container"))
+                        click(response_label_items[handle_start_index + index].web_element)
+                        click("留下你的精彩评论吧")
+                        write(match_comment_text)
+                        press(ENTER)
+            except IndexError:
+                continue
 
     @staticmethod
     def _video_discuss_comment_click_like():
