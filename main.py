@@ -1,6 +1,6 @@
 from douyin.douyin import Douyin
 
-dou_yin = Douyin("douyin.text", "match.text")
+dou_yin = Douyin("douyin.text", "match_video.text", "match_comment.text")
 
 
 def select_platform():
