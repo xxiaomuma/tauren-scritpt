@@ -41,7 +41,7 @@ def select_douyin_operation(function_num):
         operation_num = input("请选择抖音操作:")
         if operation_num:
             if function_num == "1":
-                print("登录成功")
+                dou_yin.search_account(operation_num)
             elif function_num == "2":
                 while True:
                     if dou_yin.is_login:

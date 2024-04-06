@@ -13,10 +13,11 @@ from operation.operation_douyin import Operation
 
 class Douyin:
 
-    def __init__(self, target_file_name, match_comment_file_name):
+    def __init__(self, target_file_name, match_video_file_name, match_comment_file_name):
         self.is_login = False
         self.operate = Operation()
         self.link_items = file_load.load(target_file_name)
+        self.match_video_items = file_load.load(match_video_file_name)
         self.match_comment_item_map = file_load.load_map(match_comment_file_name)
 
     def login(self):
@@ -32,6 +33,16 @@ class Douyin:
                 time.sleep(3)
         time.sleep(6)
         press(DOWN)
+
+    def search_account(self, operation_num):
+        for link in self.link_items:
+            print("正在处理: %s" % link)
+            go_to(link)
+            time.sleep(1)
+            # 关注
+            self.operate.user_click_follow()
+            self.operate.user_video_comment(operation_num, self.match_video_items, self.match_comment_item_map)
+            print("已完成")
 
     def search_video(self, operation_num):
         for link in self.link_items:
